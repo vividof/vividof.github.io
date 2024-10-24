@@ -3,13 +3,13 @@ import Header from './components/Header'
 import Home from './components/Home'
 import About from './components/About'
 import Services from './components/Services'
-import Works from './components/Works'
-import Clients from './components/Clients'
+import Results from './components/Results'
+import Testimonials from './components/Testimonials'
 import Footer from './components/Footer'
 import { LanguageProvider } from './contexts/LanguageContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 
-function App() {
+const App = () => {
   useEffect(() => {
     const smoothScroll = (e: Event) => {
       e.preventDefault();
@@ -47,8 +47,8 @@ function App() {
             <Home />
             <About />
             <Services />
-            <Works />
-            <Clients />
+            <Results />
+            <Testimonials />
           </main>
           <Footer />
         </div>

@@ -37,8 +37,8 @@ const Header = () => {
     { href: '#home', label: t('home') },
     { href: '#about', label: t('about') },
     { href: '#services', label: t('services') },
-    { href: '#works', label: t('works') },
-    { href: '#clients', label: t('clients') },
+    { href: '#results', label: t('results') },
+    { href: '#testimonials', label: t('testimonials') },
   ];
 
   const scrollToTop = (e: React.MouseEvent<HTMLAnchorElement>) => {

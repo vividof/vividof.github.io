@@ -3,21 +3,15 @@ export const mediaConfig = {
     backgroundVideo: '/videos/hero-background.mp4',
     fallbackImage: '/images/hero-background.jpg',
   },
-  works: [
-    { image: '/images/works/fashion-week.jpg', title: 'fashionWeekParis' },
-    { image: '/images/works/summer-collection.jpg', title: 'summerCollection' },
-    { image: '/images/works/luxury-campaign.jpg', title: 'luxuryBrandCampaign' },
-    { image: '/images/works/magazine-cover.jpg', title: 'magazineCoverShoot' },
+  results: [
+    { image: '/images/results/fashion-week.jpg', title: 'fashionWeekParis' },
+    { image: '/images/results/summer-collection.jpg', title: 'summerCollection' },
+    { image: '/images/results/luxury-campaign.jpg', title: 'luxuryBrandCampaign' },
+    { image: '/images/results/magazine-cover.jpg', title: 'magazineCoverShoot' },
   ],
-  clients: [
-    '/images/clients/adidas-logo.png',
-    '/images/clients/nike-logo.png',
-    '/images/clients/zara-logo.png',
-    '/images/clients/vogue-logo.png',
-  ],
-  models: [
-    { image: '/images/models/model-1.jpg', name: 'Emma Stone' },
-    { image: '/images/models/model-2.jpg', name: 'John Doe' },
-    { image: '/images/models/model-3.jpg', name: 'Sarah Johnson' },
+  testimonials: [
+    { videoUrl: '/videos/testimonial1.mp4', poster: '/images/testimonials/poster1.jpg' },
+    { videoUrl: '/videos/testimonial2.mp4', poster: '/images/testimonials/poster2.jpg' },
+    { videoUrl: '/videos/testimonial3.mp4', poster: '/images/testimonials/poster3.jpg' },
   ],
 }

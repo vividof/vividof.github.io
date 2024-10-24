@@ -38,7 +38,6 @@ const Home = () => {
       </div>
       <div className="relative z-10 text-center text-white">
         <h1 className="text-5xl font-bold mb-4">{t('welcomeToVivid')}</h1>
-        <p className="text-xl mb-8">{t('discoverTopTalent')}</p>
         <div className="space-x-4">
           <button
             onClick={() => setShowJoinUsForm(true)}
