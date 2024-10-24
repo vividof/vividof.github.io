@@ -39,6 +39,7 @@ const Header = () => {
     { href: '#services', label: t('services') },
     { href: '#results', label: t('results') },
     { href: '#testimonials', label: t('testimonials') },
+    { href: '#faq', label: t('faq') }
   ];
 
   const scrollToTop = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -63,7 +64,11 @@ const Header = () => {
             onClick={scrollToTop}
             className="flex items-center hover:opacity-80 transition-opacity duration-200"
           >
-            <img src="/logo.png" alt="Vivid Logo" className="h-8 w-auto" />
+            <img 
+              src={isDarkMode ? "/logo-l.png" : "/logo.png"} 
+              alt="Vivid Logo" 
+              className="h-8 w-auto" 
+            />
           </a>
           <button
             ref={menuButtonRef}

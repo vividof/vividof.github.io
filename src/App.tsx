@@ -1,15 +1,20 @@
 import React, { useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { Toaster } from 'sonner'
 import Header from './components/Header'
 import Home from './components/Home'
 import About from './components/About'
 import Services from './components/Services'
 import Results from './components/Results'
 import Testimonials from './components/Testimonials'
+import FAQ from './components/FAQ'
 import Footer from './components/Footer'
+import AdminLogin from './pages/AdminLogin'
+import AdminDashboard from './pages/AdminDashboard'
 import { LanguageProvider } from './contexts/LanguageContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 
-const App = () => {
+const MainLayout = () => {
   useEffect(() => {
     const smoothScroll = (e: Event) => {
       e.preventDefault();
@@ -39,19 +44,33 @@ const App = () => {
   }, []);
 
   return (
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
+      <Header />
+      <main className="pt-16">
+        <Home />
+        <About />
+        <Services />
+        <Results />
+        <Testimonials />
+        <FAQ />
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+const App = () => {
+  return (
     <ThemeProvider>
       <LanguageProvider>
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
-          <Header />
-          <main className="pt-16">
-            <Home />
-            <About />
-            <Services />
-            <Results />
-            <Testimonials />
-          </main>
-          <Footer />
-        </div>
+        <Router>
+          <Routes>
+            <Route path="/" element={<MainLayout />} />
+            <Route path="/admin" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          </Routes>
+        </Router>
+        <Toaster position="top-right" />
       </LanguageProvider>
     </ThemeProvider>
   )

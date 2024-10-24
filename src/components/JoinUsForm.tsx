@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useLanguage } from '../contexts/LanguageContext'
+import { supabase } from '../lib/supabase'
+import { toast } from 'sonner'
 
 interface JoinUsFormProps {
   onClose: () => void;
@@ -7,6 +9,7 @@ interface JoinUsFormProps {
 
 const JoinUsForm: React.FC<JoinUsFormProps> = ({ onClose }) => {
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { t } = useLanguage();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,12 +18,34 @@ const JoinUsForm: React.FC<JoinUsFormProps> = ({ onClose }) => {
     }
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted');
-    console.log('Selected files:', selectedFiles);
-    onClose();
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData(event.currentTarget);
+      const submission = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        message: formData.get('message'),
+        created_at: new Date().toISOString(),
+      };
+
+      const { error } = await supabase
+        .from('submissions')
+        .insert([submission]);
+
+      if (error) throw error;
+
+      toast.success(t('submissionSuccess'));
+      onClose();
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast.error(t('submissionError'));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -68,8 +93,21 @@ const JoinUsForm: React.FC<JoinUsFormProps> = ({ onClose }) => {
             </div>
           )}
           <div className="flex justify-end space-x-4">
-            <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition duration-300">{t('cancel')}</button>
-            <button type="submit" className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-300">{t('submit')}</button>
+            <button 
+              type="button" 
+              onClick={onClose} 
+              className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition duration-300"
+              disabled={isSubmitting}
+            >
+              {t('cancel')}
+            </button>
+            <button 
+              type="submit" 
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-300 disabled:opacity-50"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? t('submitting') : t('submit')}
+            </button>
           </div>
         </form>
       </div>
