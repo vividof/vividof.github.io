@@ -1,19 +1,39 @@
 import React, { useState } from 'react'
 import JoinUsForm from './JoinUsForm'
 import { useLanguage } from '../contexts/LanguageContext'
+import { mediaConfig } from '../config/media'
 
 const Home = () => {
   const [showJoinUsForm, setShowJoinUsForm] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
   const { t } = useLanguage();
+
+  const handleVideoError = () => {
+    setVideoFailed(true);
+  };
 
   return (
     <section id="home" className="relative h-screen flex items-center justify-center">
       <div className="absolute inset-0 z-0">
-        <img
-          src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
-          alt="Model on runway"
-          className="w-full h-full object-cover"
-        />
+        {!videoFailed ? (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover"
+            onError={handleVideoError}
+            poster={mediaConfig.home.fallbackImage}
+          >
+            <source src={mediaConfig.home.backgroundVideo} type="video/mp4" />
+          </video>
+        ) : (
+          <img
+            src={mediaConfig.home.fallbackImage}
+            alt="Model on runway"
+            className="w-full h-full object-cover"
+          />
+        )}
         <div className="absolute inset-0 bg-black opacity-50"></div>
       </div>
       <div className="relative z-10 text-center text-white">
