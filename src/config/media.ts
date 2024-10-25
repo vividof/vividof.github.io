@@ -4,10 +4,10 @@ export const mediaConfig = {
     fallbackImage: '/images/hero-background.jpg',
   },
   results: [
-    { image: '/images/results/fashion-week.jpg', title: 'fashionWeekParis' },
-    { image: '/images/results/summer-collection.jpg', title: 'summerCollection' },
-    { image: '/images/results/luxury-campaign.jpg', title: 'luxuryBrandCampaign' },
-    { image: '/images/results/magazine-cover.jpg', title: 'magazineCoverShoot' },
+    { image: '/images/results/result1.jpg' },
+    { image: '/images/results/result2.jpg' },
+    { image: '/images/results/result3.jpg' },
+    { image: '/images/results/result4.jpg' },
   ],
   testimonials: [
     { videoUrl: '/videos/testimonial1.mp4', poster: '/images/testimonials/poster1.jpg' },

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useLanguage } from '../contexts/LanguageContext'
-import { supabase } from '../lib/supabase'
 import { toast } from 'sonner'
 
 interface JoinUsFormProps {
@@ -23,21 +22,8 @@ const JoinUsForm: React.FC<JoinUsFormProps> = ({ onClose }) => {
     setIsSubmitting(true);
 
     try {
-      const formData = new FormData(event.currentTarget);
-      const submission = {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        phone: formData.get('phone'),
-        message: formData.get('message'),
-        created_at: new Date().toISOString(),
-      };
-
-      const { error } = await supabase
-        .from('submissions')
-        .insert([submission]);
-
-      if (error) throw error;
-
+      // Simulate form submission
+      await new Promise(resolve => setTimeout(resolve, 1000));
       toast.success(t('submissionSuccess'));
       onClose();
     } catch (error) {

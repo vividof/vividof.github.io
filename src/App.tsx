@@ -9,8 +9,6 @@ import Results from './components/Results'
 import Testimonials from './components/Testimonials'
 import FAQ from './components/FAQ'
 import Footer from './components/Footer'
-import AdminLogin from './pages/AdminLogin'
-import AdminDashboard from './pages/AdminDashboard'
 import { LanguageProvider } from './contexts/LanguageContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 
@@ -66,8 +64,6 @@ const App = () => {
         <Router>
           <Routes>
             <Route path="/" element={<MainLayout />} />
-            <Route path="/admin" element={<AdminLogin />} />
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
           </Routes>
         </Router>
         <Toaster position="top-right" />
