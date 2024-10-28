@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import JoinUsForm from './JoinUsForm'
 import { useLanguage } from '../contexts/LanguageContext'
 import { mediaConfig } from '../config/media'
@@ -6,7 +6,14 @@ import { mediaConfig } from '../config/media'
 const Home = () => {
   const [showJoinUsForm, setShowJoinUsForm] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState('');
   const { t } = useLanguage();
+
+  useEffect(() => {
+    const videos = mediaConfig.home.backgroundVideos;
+    const randomIndex = Math.floor(Math.random() * videos.length);
+    setSelectedVideo(videos[randomIndex]);
+  }, []);
 
   const handleVideoError = () => {
     setVideoFailed(true);
@@ -15,7 +22,7 @@ const Home = () => {
   return (
     <section id="home" className="relative h-screen flex items-center justify-center">
       <div className="absolute inset-0 z-0">
-        {!videoFailed ? (
+        {!videoFailed && selectedVideo ? (
           <video
             autoPlay
             muted
@@ -25,12 +32,12 @@ const Home = () => {
             onError={handleVideoError}
             poster={mediaConfig.home.fallbackImage}
           >
-            <source src={mediaConfig.home.backgroundVideo} type="video/mp4" />
+            <source src={selectedVideo} type="video/mp4" />
           </video>
         ) : (
           <img
             src={mediaConfig.home.fallbackImage}
-            alt="Model on runway"
+            alt="background"
             className="w-full h-full object-cover"
           />
         )}

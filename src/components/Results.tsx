@@ -18,8 +18,8 @@ const Results = () => {
           {mediaConfig.results.map((result, index) => (
             <div key={index} className="relative overflow-hidden group rounded-lg shadow-lg">
               <img 
-                src={result.image} 
-                alt={`Result ${index + 1}`} 
+                src={result.image}
+                alt={`Result ${index + 1}`}
                 className="w-full h-64 object-cover transition duration-300 transform group-hover:scale-110" 
               />
             </div>
