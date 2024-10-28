@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import JoinUsForm from './JoinUsForm'
 import { useLanguage } from '../contexts/LanguageContext'
 import { mediaConfig } from '../config/media'
@@ -7,13 +7,44 @@ const Home = () => {
   const [showJoinUsForm, setShowJoinUsForm] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState('');
+  const playCountRef = useRef(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const { t } = useLanguage();
 
-  useEffect(() => {
+  const selectRandomVideo = () => {
     const videos = mediaConfig.home.backgroundVideos;
-    const randomIndex = Math.floor(Math.random() * videos.length);
-    setSelectedVideo(videos[randomIndex]);
+    const currentVideo = selectedVideo;
+    let newVideo = currentVideo;
+    
+    // Ensure we select a different video
+    while (newVideo === currentVideo) {
+      const randomIndex = Math.floor(Math.random() * videos.length);
+      newVideo = videos[randomIndex];
+    }
+    
+    setSelectedVideo(newVideo);
+    playCountRef.current = 0;
+  };
+
+  useEffect(() => {
+    selectRandomVideo();
   }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleEnded = () => {
+      playCountRef.current += 1;
+      
+      if (playCountRef.current >= 5) {
+        selectRandomVideo();
+      }
+    };
+
+    video.addEventListener('ended', handleEnded);
+    return () => video.removeEventListener('ended', handleEnded);
+  }, [selectedVideo]);
 
   const handleVideoError = () => {
     setVideoFailed(true);
@@ -24,6 +55,7 @@ const Home = () => {
       <div className="absolute inset-0 z-0">
         {!videoFailed && selectedVideo ? (
           <video
+            ref={videoRef}
             autoPlay
             muted
             loop
