@@ -7,7 +7,7 @@ const Home = () => {
   const [showJoinUsForm, setShowJoinUsForm] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState('');
-  const playCountRef = useRef(0);
+  const loopCountRef = useRef(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { t } = useLanguage();
 
@@ -23,7 +23,13 @@ const Home = () => {
     }
     
     setSelectedVideo(newVideo);
-    playCountRef.current = 0;
+    loopCountRef.current = 0;
+
+    // Play the new video if video element exists
+    if (videoRef.current) {
+      videoRef.current.load();
+      videoRef.current.play();
+    }
   };
 
   useEffect(() => {
@@ -35,10 +41,14 @@ const Home = () => {
     if (!video) return;
 
     const handleEnded = () => {
-      playCountRef.current += 1;
+      loopCountRef.current += 1;
       
-      if (playCountRef.current >= 5) {
+      if (loopCountRef.current >= 5) {
         selectRandomVideo();
+      } else {
+        // If not switching videos, replay the current one
+        video.currentTime = 0;
+        video.play();
       }
     };
 
@@ -47,6 +57,7 @@ const Home = () => {
   }, [selectedVideo]);
 
   const handleVideoError = () => {
+    console.error('Video playback failed');
     setVideoFailed(true);
   };
 
@@ -58,7 +69,6 @@ const Home = () => {
             ref={videoRef}
             autoPlay
             muted
-            loop
             playsInline
             className="w-full h-full object-cover"
             onError={handleVideoError}
