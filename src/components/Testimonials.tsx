@@ -19,29 +19,25 @@ const Testimonials = () => {
           {mediaConfig.testimonials.map((testimonial, index) => (
             <div key={index} className="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden">
               <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-                <video 
-                  controls={playingVideo === index}
-                  autoPlay={playingVideo === index}
-                  className="absolute top-0 left-0 w-full h-full"
-                  preload="none"
-                  poster={testimonial.videoUrl + '#t=0.1'}
-                  style={{ display: playingVideo === index ? 'block' : 'none' }}
-                >
-                  <source src={testimonial.videoUrl} type="video/mp4" />
-                </video>
-                {playingVideo !== index && (
+                {playingVideo === index ? (
+                  <video 
+                    controls
+                    autoPlay
+                    className="absolute top-0 left-0 w-full h-full object-cover"
+                    preload="none"
+                  >
+                    <source src={testimonial.videoUrl} type="video/mp4" />
+                  </video>
+                ) : (
                   <div 
                     className="absolute top-0 left-0 w-full h-full cursor-pointer group"
                     onClick={() => handleVideoPlay(index)}
                   >
-                    <video 
+                    <img 
+                      src={testimonial.poster}
+                      alt={`Testimonial ${index + 1}`}
                       className="w-full h-full object-cover"
-                      preload="none"
-                      poster={testimonial.videoUrl + '#t=0.1'}
-                      muted
-                    >
-                      <source src={testimonial.videoUrl} type="video/mp4" />
-                    </video>
+                    />
                     <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 group-hover:bg-opacity-40 transition-opacity duration-300">
                       <Play className="w-16 h-16 text-white opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
