@@ -8,23 +8,23 @@ const About = () => {
   const features = [
     {
       icon: <Target className="w-8 h-8 text-blue-600" />,
-      title: 'Strategic Growth',
-      description: 'We help creators develop targeted strategies for sustainable growth and engagement.'
+      title: t('strategicGrowth'),
+      description: t('strategicGrowthDesc')
     },
     {
       icon: <Rocket className="w-8 h-8 text-green-600" />,
-      title: 'Fast Results',
-      description: 'Our proven methods deliver rapid growth while maintaining long-term sustainability.'
+      title: t('fastResults'),
+      description: t('fastResultsDesc')
     },
     {
       icon: <Users className="w-8 h-8 text-purple-600" />,
-      title: 'Expert Team',
-      description: 'Work with industry professionals who understand the creator economy.'
+      title: t('expertTeam'),
+      description: t('expertTeamDesc')
     },
     {
       icon: <Award className="w-8 h-8 text-yellow-600" />,
-      title: 'Proven Success',
-      description: 'Join hundreds of creators who have achieved top 1% status with our guidance.'
+      title: t('provenSuccess'),
+      description: t('provenSuccessDesc')
     }
   ]
 

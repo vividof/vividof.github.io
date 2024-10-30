@@ -25,7 +25,7 @@ const Footer = () => {
               className="h-8 w-auto mb-4" 
             />
             <p className="text-sm mb-4">
-              {t('footerTagline')}
+              {t('Maximizing Revenue with Personalized Strategies.')}
             </p>
             <div className="flex space-x-4">
               <a 
@@ -85,7 +85,7 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
-                <span>+1 (555) 123-4567</span>
+                <span>+1 (213) 263-4527</span>
               </li>
               <li className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
@@ -98,7 +98,7 @@ const Footer = () => {
               </li>
               <li className="flex items-start space-x-2">
                 <MapPin className="h-4 w-4 mt-1" />
-                <span>123 Creator Street<br />Los Angeles, CA 90001</span>
+                <span>7609 Mckinley Ave<br />Los Angeles, CA 90001</span>
               </li>
             </ul>
           </div>
@@ -110,7 +110,7 @@ const Footer = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-sm mb-4 md:mb-0">
-              © 2024 Vivid. {t('allRightsReserved')}
+              © 2024 Vivid Agency - {t('allRightsReserved')}
             </p>
             <button
               onClick={scrollToTop}
