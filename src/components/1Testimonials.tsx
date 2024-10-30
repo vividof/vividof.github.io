@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { useLanguage } from '../contexts/LanguageContext'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import Plyr from 'plyr-react'
-import 'plyr/dist/plyr.css'
+import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react'
 
 interface Testimonial {
   id: number
@@ -16,6 +14,8 @@ interface Testimonial {
 const Testimonials = () => {
   const { t } = useLanguage()
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   const testimonials: Testimonial[] = [
     {
@@ -44,20 +44,30 @@ const Testimonials = () => {
     }
   ]
 
-  const plyrOptions = {
-    controls: [
-      'play-large',
-      'play',
-      'progress',
-      'current-time',
-      'mute',
-      'volume',
-      'fullscreen'
-    ],
-    ratio: '16:9'
+  const handleVideoEnd = () => {
+    setIsPlaying(false)
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0
+    }
+  }
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause()
+      } else {
+        videoRef.current.play()
+      }
+      setIsPlaying(!isPlaying)
+    }
   }
 
   const changeTestimonial = (newIndex: number) => {
+    if (videoRef.current) {
+      videoRef.current.pause()
+      videoRef.current.currentTime = 0
+    }
+    setIsPlaying(false)
     setCurrentIndex(newIndex)
   }
 
@@ -72,7 +82,7 @@ const Testimonials = () => {
   }
 
   return (
-    <section id="testimonials" className="py-16 bg-white dark:bg-gray-800">
+    <section id="testimonials" className="py-16 bg-gray-100 dark:bg-gray-800">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-12 dark:text-white">
           {t('testimonials')}
@@ -80,23 +90,31 @@ const Testimonials = () => {
         
         <div className="max-w-2xl mx-auto">
           <div className="bg-white dark:bg-gray-700 rounded-lg shadow-lg overflow-hidden">
-            <div className="relative w-full bg-white dark:bg-gray-700">
-              <Plyr
-                source={{
-                  type: 'video',
-                  sources: [
-                    {
-                      src: testimonials[currentIndex].videoUrl,
-                      type: 'video/mp4',
-                    }
-                  ],
-                  poster: testimonials[currentIndex].poster
-                }}
-                options={plyrOptions}
-              />
+            <div className="relative w-full" style={{ aspectRatio: '16/9', maxHeight: '280px' }}>
+              <video
+                ref={videoRef}
+                poster={testimonials[currentIndex].poster}
+                onEnded={handleVideoEnd}
+                playsInline
+                className="w-full h-full object-cover"
+              >
+                <source src={testimonials[currentIndex].videoUrl} type="video/mp4" />
+              </video>
+              
+              <button
+                onClick={togglePlay}
+                className="absolute inset-0 w-full h-full flex items-center justify-center bg-black bg-opacity-40 hover:bg-opacity-50 transition-opacity duration-200"
+                aria-label={isPlaying ? 'Pause video' : 'Play video'}
+              >
+                {isPlaying ? (
+                  <Pause className="w-12 h-12 text-white opacity-90" />
+                ) : (
+                  <Play className="w-12 h-12 text-white opacity-90" />
+                )}
+              </button>
             </div>
 
-            <div className="p-6 bg-white dark:bg-gray-700">
+            <div className="p-5">
               <div className="mb-4">
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">
                   {testimonials[currentIndex].name}

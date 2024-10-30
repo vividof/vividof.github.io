@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
 type Language = 'en' | 'es';
 
@@ -22,8 +22,55 @@ interface LanguageProviderProps {
   children: ReactNode;
 }
 
+// Spanish-speaking countries ISO codes
+const spanishSpeakingCountries = [
+  'AR', 'BO', 'CL', 'CO', 'CR', 'CU', 'DO', 'EC', 'SV', 'GQ',
+  'GT', 'HN', 'MX', 'NI', 'PA', 'PY', 'PE', 'ES', 'UY', 'VE'
+];
+
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const detectUserLanguage = async () => {
+      try {
+        // First, try to get the stored language preference
+        const storedLang = localStorage.getItem('preferredLanguage');
+        if (storedLang === 'es' || storedLang === 'en') {
+          setLanguage(storedLang);
+          setIsLoading(false);
+          return;
+        }
+
+        // If no stored preference, try to detect from IP
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        
+        // Set Spanish if user is from a Spanish-speaking country
+        if (spanishSpeakingCountries.includes(data.country_code)) {
+          setLanguage('es');
+          localStorage.setItem('preferredLanguage', 'es');
+        } else {
+          setLanguage('en');
+          localStorage.setItem('preferredLanguage', 'en');
+        }
+      } catch (error) {
+        console.error('Error detecting language:', error);
+        // Default to English if detection fails
+        setLanguage('en');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    detectUserLanguage();
+  }, []);
+
+  const handleSetLanguage = (newLang: Language) => {
+    setLanguage(newLang);
+    localStorage.setItem('preferredLanguage', newLang);
+  };
 
   const translations: Record<Language, Record<string, string>> = {
     en: {
@@ -86,6 +133,9 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
       faqAnswer4: 'Yes! We provide professional photography and videography services, content planning, and creative direction to ensure your content stands out and attracts subscribers.',
       faqQuestion5: 'What makes your agency different?',
       faqAnswer5: 'We offer a full-service approach, handling everything from content creation to marketing. Our proven track record of helping creators reach the top 1% sets us apart.',
+      backToTop: 'Back to Top',
+      quickLinks: 'Quick Links',
+      contactUs: 'Contact Us',
     },
     es: {
       home: 'Inicio',
@@ -147,6 +197,9 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
       faqAnswer4: '¡Sí! Proporcionamos servicios profesionales de fotografía y videografía, planificación de contenido y dirección creativa para asegurar que tu contenido destaque y atraiga suscriptores.',
       faqQuestion5: '¿Qué hace diferente a su agencia?',
       faqAnswer5: 'Ofrecemos un enfoque de servicio completo, manejando todo desde la creación de contenido hasta el marketing. Nuestro historial probado de ayudar a los creadores a alcanzar el top 1% nos distingue.',
+      backToTop: 'Volver arriba',
+      quickLinks: 'Enlaces rápidos',
+      contactUs: 'Contáctanos',
     },
   };
 
@@ -154,8 +207,14 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     return translations[language][key] || key;
   };
 
+  if (isLoading) {
+    return <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+    </div>;
+  }
+
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );

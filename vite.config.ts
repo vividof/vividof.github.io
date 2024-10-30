@@ -9,4 +9,7 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: true,
   },
+  optimizeDeps: {
+    include: ['prop-types'], // Explicitly include prop-types for Vite optimization
+  },
 })
